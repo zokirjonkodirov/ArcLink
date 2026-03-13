@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build package
+        run: |
+          pip install build
+          python -m build
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  homebrew:
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          sparse-checkout: |
+            Formula
+          sparse-checkout-cone-mode: false
+
+      - name: Update SHA256
+        run: |
+          curl -sL https://github.com/zokirjonkodirov/ArcLink/archive/refs/tags/${{ github.ref_name }}.tar.gz | sha256sum | awk '{print $1}' > sha256.txt
+          sed -i "s/sha256 \".*\"/sha256 \"$(cat sha256.txt)\"/" Formula/arclink.rb
+          cat Formula/arclink.rb
+
+      - name: Commit formula update
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add Formula/arclink.rb
+          git commit -m "Update formula to ${{ github.ref_name }}" || echo "No changes to commit"
+          git push

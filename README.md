@@ -12,14 +12,14 @@ Arc Browser lacks a built-in export feature for bookmarks. The "Copy All Links" 
 
 ## Installation
 
-### Via Homebrew (macOS)
+### Standalone (macOS/Linux/Windows)
+
+Download the standalone script and run it:
 
 ```bash
-# Add the tap (one-time)
-brew tap zokirjonkodirov/homebrew-arclink
-
-# Install
-brew install arclink
+curl -sL https://raw.githubusercontent.com/zokirjonkodirov/ArcLink/main/src/arclink/__main__.py -o arclink
+chmod +x arclink
+./arclink --help
 ```
 
 ### Via pip
@@ -28,11 +28,24 @@ brew install arclink
 pip install arclink
 ```
 
+### Via Homebrew (macOS)
+
+```bash
+# First, create a local tap
+brew tap-new $USER/homebrew-arclink
+
+# Copy the formula from this repo
+cp Formula/arclink.rb $(brew --prefix)/Library/Taps/homebrew/homebrew-arclink/Formula/
+
+# Install
+brew install arclink
+```
+
 ### From source
 
 ```bash
 git clone https://github.com/zokirjonkodirov/ArcLink.git
-cd ArcLink/arclink
+cd ArcLink
 pip install -e .
 ```
 
