@@ -48,7 +48,10 @@ jobs:
       - name: Update formula
         run: |
           TAG_NAME=${GITHUB_REF_NAME}
+          VERSION=${TAG_NAME#v}
           curl -sL https://github.com/zokirjonkodirov/ArcLink/archive/refs/tags/$TAG_NAME.tar.gz | sha256sum | awk '{print $1}' > sha256.txt
+          sed -i "s|version \".*\"|version \"$VERSION\"|" homebrew-arclink/arclink.rb
+          sed -i "s|url \".*archive/refs/tags/.*\.tar\.gz\"|url \"https://github.com/zokirjonkodirov/ArcLink/archive/refs/tags/$TAG_NAME.tar.gz\"|" homebrew-arclink/arclink.rb
           sed -i "s/sha256 \".*\"/sha256 \"$(cat sha256.txt)\"/" homebrew-arclink/arclink.rb
           cat homebrew-arclink/arclink.rb
 
