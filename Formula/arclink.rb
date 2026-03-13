@@ -6,14 +6,14 @@ class Arclink < Formula
   license "MIT"
   version "1.0.0"
 
-  depends_on "python@3.12"
+  depends_on "python3"
 
   def install
-    ENV.append "PIP_NO_INDEX", "1"
-    system "pip3", "install", "--prefix=#{prefix}", "."
+    bin.install "src/arclink/__main__.py" => "arclink"
+    chmod 0755, bin/"arclink"
   end
 
   test do
-    system "#{bin}/arclink", "--help"
+    assert_match "arclink", shell_output("#{bin}/arclink --help")
   end
 end
