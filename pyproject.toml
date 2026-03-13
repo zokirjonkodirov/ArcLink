@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arclink"
+version = "1.0.0"
+description = "Export Arc Browser pinned tabs to Markdown"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Zokirjon Kodirov", email = "zokirjonkodirov@gmail.com"}
+]
+keywords = ["arc", "browser", "bookmarks", "export", "markdown", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0.0",
+]
+
+[project.scripts]
+arclink = "arclink.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/zokirjonkodirov/ArcLink"
+Repository = "https://github.com/zokirjonkodirov/ArcLink"
+Issues = "https://github.com/zokirjonkodirov/ArcLink/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -4,7 +4,6 @@ ARC Browser Saved Links Exporter
 Export pinned tabs and bookmarks from Arc Browser to Markdown format.
 """
 
-import argparse
 import json
 import os
 import sys
@@ -46,17 +45,6 @@ def extract_items_array(items: list) -> dict[str, dict]:
             id_map[current_id] = item
     
     return id_map
-
-
-def find_space_name(items_map: dict[str, dict], space_id: str) -> str:
-    """Find the name of a space from its ID."""
-    if space_id in items_map:
-        item = items_map[space_id]
-        title = item.get("title")
-        if title:
-            return title
-    
-    return f"Space ({space_id[:8]}...)"
 
 
 def extract_bookmark_from_item(item: dict) -> tuple[str, str] | None:
@@ -189,66 +177,3 @@ def export_to_markdown(
         print(f"Exported to: {output_path}")
     
     return output_path
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="Export ARC Browser saved links to Markdown file",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s                      # Auto-detect Arc data and export to Downloads
-  %(prog)s -v                   # Verbose output
-  %(prog)s -o custom.md         # Specify output file
-  %(prog)s --data-file /path/to/StorableSidebar.json  # Specify Arc data file
-        """
-    )
-    
-    parser.add_argument(
-        "-o", "--output",
-        help="Output Markdown file path (default: ~/Downloads/arc_bookmarks_TIMESTAMP.md)",
-        type=Path
-    )
-    
-    parser.add_argument(
-        "-d", "--data-file",
-        help="Path to StorableSidebar.json (auto-detected if not specified)",
-        type=Path
-    )
-    
-    parser.add_argument(
-        "-v", "--verbose",
-        action="store_true",
-        help="Enable verbose output"
-    )
-    
-    args = parser.parse_args()
-    
-    data_path = args.data_file
-    
-    if data_path is None:
-        if args.verbose:
-            print("Auto-detecting Arc data file location...")
-        data_path = get_arc_data_path()
-        
-        if data_path is None:
-            print("Error: Could not find Arc data file.", file=sys.stderr)
-            print("\nPlease specify the path manually:", file=sys.stderr)
-            print("  macOS: ~/Library/Application Support/Arc/StorableSidebar.json", file=sys.stderr)
-            print("  Windows: %LOCALAPPDATA%\\Packages\\TheBrowserCompany.Arc_*\\LocalCache\\Local\\Arc\\StorableSidebar.json", file=sys.stderr)
-            sys.exit(1)
-    
-    if not data_path.exists():
-        print(f"Error: File not found: {data_path}", file=sys.stderr)
-        sys.exit(1)
-    
-    try:
-        output_path = export_to_markdown(data_path, args.output, args.verbose)
-        print(f"Successfully exported to: {output_path}")
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()

@@ -1,4 +1,4 @@
-# ARC Browser Saved Links Exporter
+# ArcLink
 
 A CLI tool to export pinned tabs and bookmarks from the Arc Browser to Markdown format.
 
@@ -9,37 +9,47 @@ Arc Browser lacks a built-in export feature for bookmarks. The "Copy All Links" 
 - Parsing Arc's internal `StorableSidebar.json` data file
 - Exporting all pinned tabs to a well-formatted Markdown file
 - Automatically saving to your Downloads folder with timestamps
-- Preserving folder structure where possible
-
-## Requirements
-
-- Python 3.8+
 
 ## Installation
 
-```bash
-# Clone or download this repository
-git clone <repo-url>
-cd arcimport
+### Via Homebrew (macOS)
 
-# Or just use the script directly
-python3 arc-export.py
+```bash
+# Add the tap (one-time)
+brew tap zokirjonkodirov/arclink
+
+# Install
+brew install arclink
+```
+
+### Via pip
+
+```bash
+pip install arclink
+```
+
+### From source
+
+```bash
+git clone https://github.com/zokirjonkodirov/ArcLink.git
+cd ArcLink/arclink
+pip install -e .
 ```
 
 ## Usage
 
 ```bash
 # Auto-detect Arc data and export to Downloads folder
-python3 arc-export.py
+arclink
 
-# Verbose output - shows what's happening
-python3 arc-export.py -v
+# Verbose output
+arclink -v
 
 # Specify custom output file
-python3 arc-export.py -o my-bookmarks.md
+arclink -o my-bookmarks.md
 
 # Manually specify Arc data file location
-python3 arc-export.py -d "C:\Users\You\AppData\Local\Packages\TheBrowserCompany.Arc_ttt1ap7aakyb4\LocalCache\Local\Arc\StorableSidebar.json"
+arclink -d "~/Library/Application Support/Arc/StorableSidebar.json"
 ```
 
 ## Finding Arc Data File
@@ -50,26 +60,23 @@ If auto-detection fails, manually locate the file:
 ```
 %LOCALAPPDATA%\Packages\TheBrowserCompany.Arc_*\LocalCache\Local\Arc\StorableSidebar.json
 ```
-Or press Win+R and paste the path above.
 
 ### macOS
 ```
 ~/Library/Application Support/Arc/StorableSidebar.json
 ```
-Press Cmd+Shift+G in Finder and paste the path.
 
 ## Output Format
-
-The exported Markdown file looks like:
 
 ```markdown
 # ARC Browser Saved Links
 
 Exported on: 2026-03-13 11:51:06
 
+## Pinned Tabs
+
 - [enoent.fr](https://enoent.fr/)
 - [Jake Wharton](https://jakewharton.com/)
-- [overreacted — A blog by Dan Abramov](https://overreacted.io/)
 - ...
 
 ---
@@ -82,4 +89,3 @@ Exported on: 2026-03-13 11:51:06
 - Only exports **pinned tabs** (not ephemeral or unpinned tabs)
 - The tool reads data locally - no data is sent anywhere
 - Close Arc Browser before exporting to ensure latest data is saved
-- On Windows, the folder name after `TheBrowserCompany.Arc_` may vary (contains a hash)
