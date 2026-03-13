@@ -16,7 +16,7 @@ Arc Browser lacks a built-in export feature for bookmarks. The "Copy All Links" 
 
 ```bash
 # Add the tap (one-time)
-brew tap zokirjonkodirov/arclink
+brew tap zokirjonkodirov/homebrew-arclink
 
 # Install
 brew install arclink
