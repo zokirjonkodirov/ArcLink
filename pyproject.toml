@@ -28,12 +28,10 @@ classifiers = [
     "Topic :: Utilities",
 ]
 requires-python = ">=3.8"
-dependencies = [
-    "click>=8.0.0",
-]
+dependencies = []
 
 [project.scripts]
-arclink = "arclink.cli:main"
+arclink = "arclink.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/zokirjonkodirov/ArcLink"
