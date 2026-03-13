@@ -31,14 +31,14 @@ pip install arclink
 ### Via Homebrew (macOS)
 
 ```bash
-# First, create a local tap
-brew tap-new $USER/homebrew-arclink
-
-# Copy the formula from this repo
-cp Formula/arclink.rb $(brew --prefix)/Library/Taps/homebrew/homebrew-arclink/Formula/
+# Add the tap
+brew tap zokirjonkodirov/homebrew-arclink
 
 # Install
 brew install arclink
+
+# Upgrade
+brew upgrade arclink
 ```
 
 ### From source
